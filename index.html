@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <input id="number" type="number">
+  <label for="useWorker"><input type="checkbox" id="useWorker">use web worker</label>
+  <button id="button">get sum</button>
+  <p id="sum"></p>
+
+  <script>
+    document
+      .getElementById('button')
+      .addEventListener('click', onButtonClick)
+
+    function onButtonClick () {
+      let number = document.getElementById('number').value
+      let useWorker = document.getElementById('useWorker').checked
+      let sum = 0
+
+      console.log('number:', number, ', web Worker:', useWorker)
+      updateResult(`calculating ${useWorker ? 'with' : 'without'} web worker ...`)
+
+      if (useWorker) {
+        getSumAsync(number, updateResult)
+      }
+      else {
+        /*
+        I am using setTimout here to give the browser some time to update the page with
+        'calculating ...' string before it starts the intensive operation
+        otherwise we will not see any updates to the page because it will be blocked !!
+        */
+        setTimeout(function () {
+          sum = getSumSync(number)
+          updateResult(sum)
+        }, 50)
+      }
+    }
+
+    function getSumSync (number) {
+      let sumElement = document.getElementById('sum')
+      sumElement.innerText = 'calculating ...'
+      let sum = 0
+      for (let i = 0; i <= number; i++) {
+        sum += i;
+      }
+      return sum
+    }
+
+    function getSumAsync (number, callback) {
+      let worker = new Worker('worker.js');
+      worker.postMessage(number);
+      worker.onmessage = function (event) {
+        callback(event.data)
+      }
+    }
+
+    function updateResult (result) {
+      document.getElementById('sum').innerHTML = result
+      console.log(result)
+    }
+  </script>
+</body>
+</html>
