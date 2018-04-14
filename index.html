@@ -5,13 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  <style>
+    .text-center {
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <input id="number" type="number">
-  <label for="useWorker"><input type="checkbox" id="useWorker">use web worker</label>
-  <button id="button">get sum</button>
-  <p id="sum"></p>
+  <h1 class="text-center">Web Worker Example</h1>
 
+  <h2>CPU Intensive Operation</h2>
+  <div>
+    <input id="number" type="number">
+    <label for="useWorker"><input type="checkbox" id="useWorker">use web worker</label>
+    <button id="button">get sum</button>
+    <p id="sum"></p>
+  </div>
+
+  <h2>Usage</h2>
+  <ul>
+    <li>Select a large number to calculate the sum of (0 + 1 + ... + number). Let this number be large enough to notice the calculation time (ex: number >= 50000000)</li>
+    <li>During the calculation time try to interact with the page (ex: increasing the number or clicking the checkbox)</li>
+    <li>repeat the same operation using a web worker for calculation instead of the main thread and see the difference</li>
+    <li>Now you can see the benefit of using web workers in your webpage :)</li>
+  </ul>
+
+  <h2>Results</h2>
+  <ul>
+    <li>Without using a web worker, you notice that the web page is freezed when the calculation is in progress and the interaction with the page is blocked.</li>
+    <li>With the use of a web worker, you notice that the webpage is not blocked this time and the interaction is still possible while the calculation is in progress.</li>
+  </ul>
+
+  <hr>
+
+  <footer class="text-center">
+    <small>
+      Developed by <a href="http://github.com/abdelaziz18003">Abdelaziz Mokhnache</a> with &hearts; and Javascript
+    </small>
+  </footer>
   <script>
     document
       .getElementById('button')
